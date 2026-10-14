@@ -7,7 +7,7 @@ library(tsdo)
 
 
 # 查询刀具-----------
-#* @post api/md_tooling/read
+#* @post api/mdTool/read
 #' 查询刀具
 #'
 #' @param FTokenErp KR_DMS数据库Token
@@ -30,16 +30,16 @@ rds_u8api_tooling_code_read<- function(FTokenErp,FToolingCode='DJ-001')
   if(ncount_token){
     #token check pass
     sql <- paste0("
-    	select FToolingID	as	id	,
-FToolingCode	as	tooling_code	,
-FToolingName	as	tooling_name	,
-FSpecificationModel	as	specification	,
-FMaterial	as	material	,
-FBrand	as	brand	,
-FStatus	as	status	,
-FRemarks	as	remark	,
-FCreateTime	as	created_at	,
-FModifyTime	as	updated_at	
+    select FToolingID,
+       FToolingCode,
+       FToolingName,
+       FSpecificationModel,
+       FMaterial,
+       FBrand,
+       FStatus,
+       FRemarks,
+       FCreateTime,
+       FModifyTime
 from rds_src_t_mdTool
 where FToolingCode='",FToolingCode,"'")
     conn = tsda::odbc_conn_createFromConfigFile(config_file = config_erp)
@@ -61,7 +61,7 @@ where FToolingCode='",FToolingCode,"'")
 }
 
 # 查询模具-----------
-#* @post api/md_mold/read
+#* @post api/mdMold/read
 #' 查询模具
 #'
 #' @param FTokenErp KR_DMS数据库Token
@@ -84,17 +84,17 @@ rds_u8api_mold_code_read<- function(FTokenErp,FMoldCode='MJ-001')
   if(ncount_token){
     #token check pass
     sql <- paste0("
-    	select FMoldID	as	id	,
-FMoldCode	as	mold_code	,
-FMoldName	as	mold_name	,
-FSpecificationModel	as	specification	,
-FMoldMaterial	as	material	,
-FBrand	as	brand	,
-FMoldOutputGroupCount	as	output_group_count	,
-FEnableStatus	as	status	,
-FBusinessRemarks	as	remark	,
-FCreateTime	as	created_at	,
-FModifyTime	as	updated_at	
+    select FMoldID,
+       FMoldCode,
+       FMoldName,
+       FSpecificationModel,
+       FMoldMaterial,
+       FBrand,
+       FMoldOutputGroupCount,
+       FEnableStatus,
+       FBusinessRemarks,
+       FCreateTime,
+       FModifyTime
 from rds_src_t_mdMold
 where FMoldCode='",FMoldCode,"'")
     conn = tsda::odbc_conn_createFromConfigFile(config_file = config_erp)
@@ -141,45 +141,46 @@ rds_u8api_workOrder_read<- function(FTokenErp,FProductionOrderNo='MO000006')
   if(ncount_token){
     #token check pass
     sql <- paste0("
-    select FProductionOrderNo	as	生产订单号	,
-FProcessPlanNo	as	工序计划单号	,
-FProcessTaskNo	as	工序任务单号	,
-FTaskType	as	任务类型	,
-FProcessStatus	as	工序状态	,
-FTaskDate	as	任务日期	,
-FPlannedStartDate	as	计划开工日期	,
-FPlannedEndDate	as	计划完成日期	,
-FProcessCode	as	工序编码	,
-FProcessName	as	工序名称	,
-FProcessType	as	工序类型	,
-FOutsourcingSupplierCode	as	委外加工商编码	,
-FDepartmentCode	as	部门编码	,
-FProductionWorkshop	as	生产车间	,
-FTeamCode	as	班组编码	,
-FTeamName	as	班组名称	,
-FMachineCode	as	加工机台	,
-FTeamLeaderEmpNo	as	班组长工号	,
-FTeamLeaderName	as	班组长姓名	,
-FInspectorEmpNo	as	质检员工号	,
-FInspectorName	as	质检员姓名	,
-FFirstInspectionFlag	as	首检是否检验	,
-FFirstInspectionMethod	as	首检检验方式	,
-FFirstInspectionTemplateCode	as	首检模板编码	,
-FPatrolInspectionFlag	as	巡检是否检验	,
-FPatrolInspectionMethod	as	巡检检验方式	,
-FPatrolInspectionTemplateCode	as	巡检模板编码	,
-FPatrolInspectionInterval	as	巡检间隔	,
-FFinalInspectionFlag	as	末检是否检验	,
-FFinalInspectionMethod	as	末检检验方式	,
-FFinalInspectionTemplateCode	as	末检模板编码	,
-FProductCode	as	产品编码	,
-FProductName	as	产品名称	,
-FSpecificationModel	as	规格型号	,
-FTaskQty	as	任务数量	,
-FTaskMaxQty	as	任务数量上限	,
-FCreator	as	创建人	,
-FCreateDate	as	创建日期	
-from rds_src_t_workOrder where FProductionOrderNo='",FProductionOrderNo,"'")
+  select FProductionOrderNo,
+       FProcessPlanNo,
+       FProcessTaskNo,
+       FTaskType,
+       FProcessStatus,
+       FTaskDate,
+       FPlannedStartDate,
+       FPlannedEndDate,
+       FProcessCode,
+       FProcessName,
+       FProcessType,
+       FOutsourcingSupplierCode,
+       FDepartmentCode,
+       FProductionWorkshop,
+       FTeamCode,
+       FTeamName,
+       FMachineCode,
+       FTeamLeaderEmpNo,
+       FTeamLeaderName,
+       FInspectorEmpNo,
+       FInspectorName,
+       FFirstInspectionFlag,
+       FFirstInspectionMethod,
+       FFirstInspectionTemplateCode,
+       FPatrolInspectionFlag,
+       FPatrolInspectionMethod,
+       FPatrolInspectionTemplateCode,
+       FPatrolInspectionInterval,
+       FFinalInspectionFlag,
+       FFinalInspectionMethod,
+       FFinalInspectionTemplateCode,
+       FProductCode,
+       FProductName,
+       FSpecificationModel,
+       FTaskQty,
+       FTaskMaxQty,
+       FCreator,
+       FCreateDate
+      from rds_src_t_workOrder
+      where FProductionOrderNo='",FProductionOrderNo,"'")
     conn = tsda::odbc_conn_createFromConfigFile(config_file = config_erp)
     data = tsda::odbc_select(conn,sql)
     ncount = nrow(data)
