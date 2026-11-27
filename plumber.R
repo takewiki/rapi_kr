@@ -184,6 +184,186 @@ FFinalInspectionFlag
   return(res)
 }
 
+
+
+
+
+# 查询中台工单-----------
+#* @post api/MidWorkOrder/read
+#' 查询中台工单
+#'
+#' @param FTokenErp KR_DMS数据库Token
+#' @param FProductionOrderNo 生产订单号
+#'
+#' @return 返回中台工单信息
+#' @export
+#'
+#' @examples
+#' rds_u8api_MidWorkOrder_read()
+rds_u8api_MidWorkOrder_read<- function(FTokenErp,FProductionOrderNo='MO000123')
+{
+  sql_token <- paste0("SELECT 
+  count(1) as FCount
+  FROM [t_sec_key]
+  where FToken ='",FTokenErp,"'")
+  conn_token = tsda::odbc_conn_createFromConfigFile(config_file = config_token)
+  data_token = tsda::odbc_select(conn_token,sql_token)
+  ncount_token = data_token$FCount
+  if(ncount_token){
+    #token check pass
+    sql <- paste0("
+  select FOrgNum	,
+FOrgId	,
+FOrgName	,
+FProcessOrgCode	,
+FProcessOrgId	,
+FProcessOrgName	,
+FStockInOrgCode	,
+FProDepartmentId	,
+FProDepartmentCode	,
+FProDepartmentName	,
+FOwnerTypeId	,
+FOwnerCode	,
+FProductionOrderNo	,
+FOperationPlanNo	,
+FMoQuantity	,
+FProductType	,
+FErpMaterialId	,
+FProductCode	,
+FProductName	,
+FProductSpec	,
+FBaseUnitNumber	,
+FBaseUnitName	,
+FBaseUnitPrecision	,
+FOperUnitNumber	,
+FUnitTransHeadQty	,
+FUnitTransOperQty	,
+FOperationTaskNo	,
+FSeqNumber	,
+FSeqType	,
+FOperNumber	,
+FIsFirstOper	,
+FErpOperationId	,
+FOperationCode	,
+FOperationName	,
+FOperationType	,
+FIsOutsourced	,
+FTaskQuantity	,
+FPlannedStartDate	,
+FPlannedEndDate	,
+FMergePartnerTaskNo	,
+FTaskType	,
+FTaskDate	,
+FCreateTime	,
+FModifyTime	,
+FErpWorkshopId	,
+FWorkshopCode	,
+FWorkshopName	,
+FWorkCenterCode	,
+FPurchaseOrgCode	,
+FErpTeamId	,
+FTeamCode	,
+FTeamName	,
+FEquipmentCode	,
+FToolingIds	,
+FToolingCodes	,
+FMoldId	,
+FMoldCode	,
+FFirstInspectionEnabled	,
+FPatrolInspectionEnabled	,
+FPatrolInspectionIntervalMinutes	,
+FFinalInspectionEnabled	,
+FErpMoId	,
+FErpMoEntryId	,
+FErpMoRowNumber	,
+FErpOperationPlanId	,
+FErpOperationPlanEntryId	,
+FErpOperationDetailId	,
+FErpOperationReportBillTypeId	,
+FErpOptCtrlCodeId	,
+FOptCtrlCode	,
+FErpCheckType	,
+FErpIsFirstPieceInspect	,
+FErpInspectBillTypeId	
+      from rds_src_t_MidWorkOrder
+      where FProductionOrderNo='",FProductionOrderNo,"'")
+    conn = tsda::odbc_conn_createFromConfigFile(config_file = config_erp)
+    data = tsda::odbc_select(conn,sql)
+    ncount = nrow(data)
+    if(ncount){
+      res = list(status=TRUE,data=data,message='查询正常',code=200)
+    }else{
+      res = list(status=FALSE,data='',message='没有查到数据',code=100)
+    }
+    
+  }else{
+    # token check failed
+    res = list(status=FALSE,data='',message='没有查到ERP数据库Token,请检查',code=100)
+  }
+  
+  
+  return(res)
+}
+
+
+
+# 查询排产数据-----------
+#* @post api/SchedulingData/read
+#' 查询排产数据
+#'
+#' @param FTokenErp KR_DMS数据库Token
+#' @param FProductionOrderNo 生产订单号
+#'
+#' @return 返回排产数据信息
+#' @export
+#'
+#' @examples
+#' rds_u8api_SchedulingData_read()
+rds_u8api_SchedulingData_read<- function(FTokenErp,FProductionOrderNo='MO000123')
+{
+  sql_token <- paste0("SELECT 
+  count(1) as FCount
+  FROM [t_sec_key]
+  where FToken ='",FTokenErp,"'")
+  conn_token = tsda::odbc_conn_createFromConfigFile(config_file = config_token)
+  data_token = tsda::odbc_select(conn_token,sql_token)
+  ncount_token = data_token$FCount
+  if(ncount_token){
+    #token check pass
+    sql <- paste0("
+    select FOrgNum	,
+FProductionOrderNo	,
+FOperationPlanNo	,
+FOperationTaskNo	,
+FPlanDate	,
+FShiftName	,
+FEquipmentCode	,
+FEquipmentName	,
+FPlannedQuantity	,
+FChangeReason	,
+FCreateTime	,
+FModifyTime	
+from rds_src_t_SchedulingData
+where FProductionOrderNo='",FProductionOrderNo,"'")
+    conn = tsda::odbc_conn_createFromConfigFile(config_file = config_erp)
+    data = tsda::odbc_select(conn,sql)
+    ncount = nrow(data)
+    if(ncount){
+      res = list(status=TRUE,data=data,message='查询正常',code=200)
+    }else{
+      res = list(status=FALSE,data='',message='没有查到数据',code=100)
+    }
+    
+  }else{
+    # token check failed
+    res = list(status=FALSE,data='',message='没有查到ERP数据库Token,请检查',code=100)
+  }
+  
+  
+  return(res)
+}
+
+
 #* @post api/sec/readme
 #' API作者说明
 #'
